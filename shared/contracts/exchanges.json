@@ -1,0 +1,20 @@
+[
+  {
+    "symbol": "GNS",
+    "name": "Genesis",
+    "address": "0xE8792Dc9ba42c4bA42A1627855EDa85187dC046B",
+    "tokenAddress": "0xCc7E3d484F9A304D4Ec8caeD3fAc6FDD9bb51989"
+  },
+  {
+    "symbol": "FNK",
+    "name": "Finik",
+    "address": "0x83CceF4FF651077104EA0f66Bd8e6B788F353565",
+    "tokenAddress": "0x9E3974D7b03Cd6d9AB1890c73fAF1f8D08F02588"
+  },
+  {
+    "symbol": "BNT",
+    "name": "Bounty",
+    "address": "0xf279b4D3aC4eA6Ae3e7a6c2F4Ca6011ce64b041e",
+    "tokenAddress": "0xE1B2B41b5173AE315f110215bCCAe982d0338d22"
+  }
+]
