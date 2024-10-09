@@ -6,7 +6,6 @@ import SelectSearch, {
 import UpDown from "@/shared/icons/UpDown";
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
-import toast from "react-hot-toast";
 import { formatEther, formatUnits, parseUnits } from "viem";
 
 import exchanges from "@/shared/contracts/exchanges.json";
@@ -48,12 +47,13 @@ export const Swapper = () => {
     options[options.length - 1].name = currencyName;
     setToken(token);
     setToken2(token2);
-  }, [currencyName]);
+  }, [currencyName, token, token2]);
 
   const { useGetETHAmount } = useExchangeOperations(token.address);
   const { useGetTokenAmount } = useExchangeOperations(token2.address);
   const { data: etherAmount, isLoading: isLoadingEtherAmount } =
-    useGetETHAmount(value);
+    useGetETHAmount(parseUnits(value, 18).toString());
+
   const { data: tokenAmount, isLoading: isLoadingTokenAmount } =
     useGetTokenAmount(parseUnits(value, 18).toString());
   const { data: tokenToTokenAmount, isLoading: isLoadingTokenToTokenAmount } =
@@ -76,6 +76,7 @@ export const Swapper = () => {
       return "0";
     } else if (token2.symbol === options[options.length - 1].symbol) {
       setSwapType(SwapType.TOKEN_TO_ETH);
+
       return formatEther(BigInt(etherAmount ? (etherAmount as string) : "0"));
     } else {
       setSwapType(SwapType.TOKEN_TO_TOKEN);
@@ -103,7 +104,7 @@ export const Swapper = () => {
   ]);
 
   return (
-    <div className="flex flex-col  md:max-w-[600px] max-w-[400px] w-full justify-center gap-4 ">
+    <div className="flex flex-col  max-w-[600px] w-full justify-center gap-4 ">
       <Balance
         tokenName={token.name}
         tokenSymbol={token.symbol}

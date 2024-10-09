@@ -48,7 +48,7 @@ const AddLiquidity = () => {
   });
 
   return (
-    <div className="flex flex-col  md:max-w-[600px] max-w-[400px] w-full justify-center gap-4">
+    <div className="flex flex-col max-w-[600px]  w-full justify-center gap-4">
       <Balance
         tokenName={token.name}
         tokenSymbol={token.symbol}

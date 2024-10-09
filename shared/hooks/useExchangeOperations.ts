@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import contract from "../contracts/Exchange.json";
@@ -64,13 +65,13 @@ export const useExchangeOperations = (exchangeAddress: string) => {
         onSuccess: () => {
           toast.success("Liquidity added successfully");
           setIsSending(false);
-          successFunc && successFunc();
+          successFunc?.();
         },
-        onError: (err: any) => {
+        onError: (err: unknown) => {
           console.log(err);
           setIsSending(false);
           toast.error("Transaction Failed! Try Again");
-          errorFunc && errorFunc();
+          errorFunc?.();
         },
       }
     );
@@ -134,7 +135,7 @@ export const useExchangeOperations = (exchangeAddress: string) => {
           toast.success("Token swapped to ETH successfully");
           setIsSending(false);
         },
-        onError: (err: any) => {
+        onError: () => {
           setIsSending(false);
           toast.error("Transaction Failed! Try Again");
         },

@@ -23,7 +23,6 @@ interface Props {
 
 const SwapButton = ({
   disabled,
-  onClick,
   label,
   amount,
   type,

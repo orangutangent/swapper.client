@@ -1,5 +1,8 @@
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
-import { polygonAmoy, sepolia } from "wagmi/chains";
+import {
+  polygonAmoy,
+  //  sepolia
+} from "wagmi/chains";
 
 export const config = getDefaultConfig({
   appName: "My Swapper App",

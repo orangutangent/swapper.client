@@ -1,6 +1,6 @@
 "use client";
 import Down from "@/shared/icons/Down";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import React from "react";
 
 interface Props {

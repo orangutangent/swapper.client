@@ -59,7 +59,7 @@ const RemoveLiquidity = () => {
   const { data: tokenReserve } = useGetTokenReserve();
 
   return (
-    <div className="flex flex-col  md:max-w-[600px] max-w-[400px] w-full justify-center gap-4">
+    <div className="flex flex-col max-w-[600px] w-full justify-center gap-4">
       <Balance
         tokenName={token.name}
         tokenSymbol={token.symbol}
@@ -102,7 +102,9 @@ const RemoveLiquidity = () => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <p>You'll receive in {currentCurrency}: </p>
+        <p>
+          You{"'"}ll receive in {currentCurrency}:{" "}
+        </p>
         {!!exchangeBalance.data?.value && (
           <h3>
             {currAmount} {currentCurrency}
@@ -110,7 +112,9 @@ const RemoveLiquidity = () => {
         )}
       </div>
       <div className="flex flex-col gap-4">
-        <p>You'll receive in {token.symbol}: </p>
+        <p>
+          You{"'"}ll receive in {token.symbol}:{" "}
+        </p>
         {!!tokenReserve && !!exchangeBalance.data?.value && (
           <h3>
             {tokenAmount} {token.symbol}

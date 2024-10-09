@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { useTokenOperations } from "@/shared/hooks/useTokenOperations";
 import { useAccount, useBalance } from "wagmi";
 import { formatEther, formatUnits } from "viem";
