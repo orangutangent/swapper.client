@@ -2,11 +2,10 @@
 import AmountInput from "@/shared/components/ui/AmountInput";
 import SelectSearch from "@/shared/components/ui/SelectSearch";
 import { useExchangeOperations } from "@/shared/hooks/useExchangeOperations";
-import { useFactoryOperations } from "@/shared/hooks/useFactoryOperations";
 import React, { useEffect } from "react";
-import exchanges from "@/shared/contracts/exchanges.json";
+// import exchanges from "@/shared/contracts/exchanges.json";
 import Balance from "@/features/Balance";
-import { formatEther, formatUnits, parseEther, parseUnits } from "viem";
+import { formatUnits, parseEther } from "viem";
 import { useAccount, useBalance } from "wagmi";
 import useCurrency from "@/shared/hooks/useCurrency";
 import { motion } from "framer-motion";
@@ -15,18 +14,21 @@ import AddLiquidityButton from "@/features/AddLiquidityButton";
 import Link from "next/link";
 
 import { shakeAnimation, getTokenAmount } from "@/shared/lib/utils";
+import useExchanges from "@/shared/hooks/useExchanges";
+import { IEXCHANGE } from "@/shared/interfaces";
 
-const options = exchanges;
+// const options = exchanges;
 
 const AddLiquidity = () => {
+  const exchanges = useExchanges(false);
+  // if (!exchanges) return null;
   const [amount, setAmount] = React.useState("0");
-  const [token, setToken] = React.useState(options[0]);
+  const [token, setToken] = React.useState<IEXCHANGE>(exchanges[0]);
+
   const currentCurrency = useCurrency();
   const { address } = useAccount();
   const { data: balance } = useBalance({ address });
-  const { useGetMyLPBalance, useGetTokenReserve } = useExchangeOperations(
-    token.address
-  );
+  const { useGetTokenReserve } = useExchangeOperations(token?.address);
   const [tokenAmount, setTokenAmount] = React.useState("0");
   useEffect(() => {
     if (amount && tokenReserve && exchangeBalance.data?.value) {
@@ -38,14 +40,16 @@ const AddLiquidity = () => {
       setTokenAmount(_tokenAmount);
     }
   }, [amount]);
-  const { useGetMyBalance } = useTokenOperations(token.tokenAddress);
+  const { useGetMyBalance } = useTokenOperations(token?.tokenAddress);
   const { data: tokenBalance } = useGetMyBalance();
 
   const { data: tokenReserve } = useGetTokenReserve();
 
   const exchangeBalance = useBalance({
-    address: `0x${token.address.slice(2)}`,
+    address: `0x${token?.address?.slice(2)}`,
   });
+
+  // if (!token) return null;
 
   return (
     <div className="flex flex-col max-w-[600px]  w-full justify-center gap-4">
@@ -69,7 +73,7 @@ const AddLiquidity = () => {
       <SelectSearch
         value={token}
         onChange={(e) => setToken(e)}
-        options={options}
+        options={exchanges}
       />
 
       {currentCurrency && <p>Amount in {currentCurrency}</p>}

@@ -3,16 +3,16 @@
 import contract from "../contracts/Factory.json";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { getAddress, parseEther } from "viem";
+import { getAddress } from "viem";
 import {
-  useAccount,
+  // useAccount,
   useReadContract,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi";
 
 export const useFactoryOperations = () => {
-  const { address, isConnected, chain } = useAccount();
+  // const { address, isConnected, chain } = useAccount();
   const { writeContract, data: hash } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({

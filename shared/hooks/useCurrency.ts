@@ -2,7 +2,7 @@
 
 import { useChainId } from "wagmi";
 
-const useCurrency = () => {
+const useCurrency = (): string => {
   const chainId = useChainId();
   switch (chainId) {
     case 1:
@@ -11,6 +11,8 @@ const useCurrency = () => {
       return "MATIC";
     case 137:
       return "MATIC";
+    case 43113:
+      return "AVAX";
     default:
       return "ETH";
   }

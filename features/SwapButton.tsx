@@ -3,6 +3,8 @@ import { useExchangeOperations } from "@/shared/hooks/useExchangeOperations";
 import { useTokenOperations } from "@/shared/hooks/useTokenOperations";
 import React from "react";
 
+import { parseEther } from "viem";
+
 export enum SwapType {
   ETH_TO_TOKEN,
   TOKEN_TO_ETH,
@@ -31,6 +33,7 @@ const SwapButton = ({
   exchange1Address,
   exchange2Address,
 }: Props) => {
+  const [isApproved, setIsApproved] = React.useState(false);
   const {
     swapTokenToETH,
     swapTokenToToken,
@@ -47,17 +50,38 @@ const SwapButton = ({
         break;
       }
       case SwapType.TOKEN_TO_ETH: {
-        approveTokens(token1Address, amount);
-        swapTokenToETH(amount);
+        // approveTokens(token1Address, parseEther(amount).toString());
+        swapTokenToETH(parseEther(amount).toString());
         break;
       }
       case SwapType.TOKEN_TO_TOKEN: {
-        approveTokens(token1Address, amount);
-        swapTokenToToken(amount, token2Address);
+        // approveTokens(token1Address, parseEther(amount).toString());
+        swapTokenToToken(parseEther(amount).toString(), token2Address);
         break;
       }
     }
   };
+
+  const handleApprove = () => {
+    approveTokens(exchange1Address, parseEther(amount).toString(), () =>
+      setIsApproved(true)
+    );
+  };
+
+  if (type !== SwapType.ETH_TO_TOKEN && !isApproved) {
+    return (
+      <button
+        onClick={handleApprove}
+        disabled={
+          disabled || isSendingExchange1 || isSendingExchange2 || isSendingToken
+        }
+        className="w-full rounded-xl text-xl font-bold bg-blue-600 hover:bg-blue-700 hover:scale-105 active:scale-95 disabled:bg-gray-500 ease-in-out duration-300 disabled:cursor-not-allowed"
+      >
+        <p className="p-2 text-white">Appove</p>
+      </button>
+    );
+  }
+
   return (
     <button
       onClick={swap}

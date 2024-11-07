@@ -61,7 +61,13 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
     },
+    screens: {
+      tablet: {
+        max: "768px",
+      },
+    },
   },
+
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [require("tailwindcss-animate")],
 };

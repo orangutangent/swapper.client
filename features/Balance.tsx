@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTokenOperations } from "@/shared/hooks/useTokenOperations";
-import { useAccount, useBalance } from "wagmi";
+import { useAccount, useBalance, useChainId } from "wagmi";
 import { formatEther, formatUnits } from "viem";
 import useCurrency from "@/shared/hooks/useCurrency";
 
@@ -16,11 +16,13 @@ const Balance = ({
   tokenName,
   tokenSymbol = tokenName,
 }: Props) => {
-  const { address } = useAccount();
-  const { data: balance } = useBalance({ address });
-  const { useGetMyBalance } = useTokenOperations(tokenAddress);
-  const { data: tokenBalance } = useGetMyBalance();
+  const chain = useChainId();
   const currencyName = useCurrency();
+  const { address } = useAccount();
+  const { data: balance, refetch: refetchBalance } = useBalance({ address });
+  const { useGetMyBalance } = useTokenOperations(tokenAddress);
+  const { data: tokenBalance, refetch: refetchTokenBalance } =
+    useGetMyBalance();
 
   return (
     <div className="text-xl flex justify-between border-2 p-2 gap-4 rounded-2xl  border-slate-600 items-center w-full ">

@@ -1,19 +1,13 @@
 "use client";
 import Down from "@/shared/icons/Down";
+import { IEXCHANGE } from "@/shared/interfaces";
 import { motion } from "framer-motion";
 import React from "react";
 
 interface Props {
-  value: ISelectOption;
-  options: ISelectOption[];
-  onChange?: (value: ISelectOption) => void;
-}
-
-export interface ISelectOption {
-  name: string;
-  symbol: string;
-  address: string;
-  tokenAddress: string;
+  value: IEXCHANGE;
+  options: IEXCHANGE[];
+  onChange?: (value: IEXCHANGE) => void;
 }
 
 const SelectSearch = ({

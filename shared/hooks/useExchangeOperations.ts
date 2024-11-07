@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import contract from "../contracts/Exchange.json";
+import contract from "../contracts/ExchangeABI.json";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { getAddress, parseEther, parseUnits } from "viem";
@@ -135,7 +135,8 @@ export const useExchangeOperations = (exchangeAddress: string) => {
           toast.success("Token swapped to ETH successfully");
           setIsSending(false);
         },
-        onError: () => {
+        onError: (err: any) => {
+          console.log(err);
           setIsSending(false);
           toast.error("Transaction Failed! Try Again");
         },

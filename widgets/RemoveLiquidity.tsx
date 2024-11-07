@@ -3,7 +3,7 @@ import AmountInput from "@/shared/components/ui/AmountInput";
 import SelectSearch from "@/shared/components/ui/SelectSearch";
 import { useExchangeOperations } from "@/shared/hooks/useExchangeOperations";
 import React, { useEffect } from "react";
-import exchanges from "@/shared/contracts/exchanges.json";
+// import exchanges from "@/shared/contracts/exchanges.json";
 import Balance from "@/features/Balance";
 import { parseEther } from "viem";
 import { useBalance } from "wagmi";
@@ -17,12 +17,15 @@ import {
   getLiquidityAmount as getAmount,
   shakeAnimation,
 } from "@/shared/lib/utils";
+import useExchanges from "@/shared/hooks/useExchanges";
 
-const options = exchanges;
+// const options = exchanges;
 
 const RemoveLiquidity = () => {
+  const exchanges = useExchanges(false);
+  if (!exchanges) return null;
   const [amountLP, setAmountLP] = React.useState("0");
-  const [token, setToken] = React.useState(options[0]);
+  const [token, setToken] = React.useState(exchanges[0]);
   const currentCurrency = useCurrency();
   const exchangeBalance = useBalance({
     address: `0x${token.address.slice(2)}`,
@@ -80,7 +83,7 @@ const RemoveLiquidity = () => {
       <SelectSearch
         value={token}
         onChange={(e) => setToken(e)}
-        options={options}
+        options={exchanges}
       />
 
       {currentCurrency && <p>Amount in LP</p>}

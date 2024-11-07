@@ -1,7 +1,7 @@
 "use client";
 
 import { get } from "http";
-import contract from "../contracts/Token.json";
+import token_abi from "../contracts/TokenABI.json";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { getAddress, parseEther, parseUnits } from "viem";
@@ -20,7 +20,7 @@ export const useTokenOperations = (tokenAddress: string) => {
   const useGetMyBalance = () => {
     const { data, isError, isLoading, refetch } = useReadContract({
       address: `0x${tokenAddress.slice(2)}`,
-      abi: contract.abi,
+      abi: token_abi,
       functionName: "balanceOf",
       args: [address && getAddress(address || "")],
       account: address && getAddress(address),
@@ -32,7 +32,7 @@ export const useTokenOperations = (tokenAddress: string) => {
   const useGetSymbol = () => {
     const { data, isError, isLoading, refetch } = useReadContract({
       address: `0x${tokenAddress.slice(2)}`,
-      abi: contract.abi,
+      abi: token_abi,
       functionName: "symbol",
     });
     return { data, isError, isLoading, refetch };
@@ -41,7 +41,7 @@ export const useTokenOperations = (tokenAddress: string) => {
   const useGetName = () => {
     const { data, isError, isLoading, refetch } = useReadContract({
       address: `0x${tokenAddress.slice(2)}`,
-      abi: contract.abi,
+      abi: token_abi,
       functionName: "name",
     });
     return { data, isError, isLoading, refetch };
@@ -50,7 +50,7 @@ export const useTokenOperations = (tokenAddress: string) => {
   const useGetTotalSupply = () => {
     const { data, isError, isLoading, refetch } = useReadContract({
       address: `0x${tokenAddress.slice(2)}`,
-      abi: contract.abi,
+      abi: token_abi,
       functionName: "totalSupply",
     });
     return { data, isError, isLoading, refetch };
@@ -66,7 +66,7 @@ export const useTokenOperations = (tokenAddress: string) => {
     writeContract(
       {
         address: `0x${tokenAddress.slice(2)}`,
-        abi: contract.abi,
+        abi: token_abi,
         functionName: "approve",
         args: [getAddress(address), amount],
       },

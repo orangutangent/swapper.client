@@ -1,53 +1,62 @@
 "use client";
 import AmountInput from "@/shared/components/ui/AmountInput";
-import SelectSearch, {
-  ISelectOption,
-} from "@/shared/components/ui/SelectSearch";
+import SelectSearch from "@/shared/components/ui/SelectSearch";
 import UpDown from "@/shared/icons/UpDown";
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { formatEther, formatUnits, parseUnits } from "viem";
 
-import exchanges from "@/shared/contracts/exchanges.json";
+import exchanges1 from "@/shared/contracts/exchanges.json";
 import { useExchangeOperations } from "@/shared/hooks/useExchangeOperations";
 import Balance from "@/features/Balance";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 import SwapButton, { SwapType } from "@/features/SwapButton";
 import useCurrency from "@/shared/hooks/useCurrency";
 
-const options = exchanges.map((exchange) => {
-  return {
-    name: exchange.name,
-    symbol: exchange.symbol,
-    address: exchange.address,
-    tokenAddress: exchange.tokenAddress,
-  } as ISelectOption;
-});
-options.push({
-  name: "Main",
-  symbol: "Main",
-  address: "0x0000000000000000000000000000000000000000",
-  tokenAddress: "0x0000000000000000000000000000000000000000",
-});
+import amoyExchanges from "@/shared/contracts/AMOY_Exchanges.json";
+import fujiExchanges from "@/shared/contracts/FUJI_Exchanges.json";
+
+import useExchanges from "@/shared/hooks/useExchanges";
+
+// const options = exchanges1.map((exchange) => {
+//   return {
+//     name: exchange.name,
+//     symbol: exchange.symbol,
+//     address: exchange.address,
+//     tokenAddress: exchange.tokenAddress,
+//   } as ISelectOption;
+// });
+// options.push({
+//   name: "Main",
+//   symbol: "Main",
+//   address: "0x0000000000000000000000000000000000000000",
+//   tokenAddress: "0x0000000000000000000000000000000000000000",
+// });
 
 export const Swapper = () => {
   const currencyName = useCurrency();
+  const chainID = useChainId();
+
+  const exchanges = useExchanges();
+
+  if (!exchanges) return null;
 
   const { isConnected } = useAccount();
   const [value, setValue] = React.useState("0");
-  const [token, setToken] = React.useState(options[0]);
-  const [token2, setToken2] = React.useState(options[options.length - 1]);
+  const [token, setToken] = React.useState(exchanges[exchanges.length - 1]);
+  const [token2, setToken2] = React.useState(exchanges[0]);
   const [amount, setAmount] = React.useState("0");
   const [tokenToETH, setTokenToETH] = React.useState("0");
   const [swapType, setSwapType] = React.useState(SwapType.ETH_TO_TOKEN);
 
   const [isFlipped, setIsFlipped] = React.useState(false);
   useEffect(() => {
-    options[options.length - 1].symbol = currencyName;
-    options[options.length - 1].name = currencyName;
-    setToken(token);
-    setToken2(token2);
-  }, [currencyName, token, token2]);
+    exchanges[exchanges.length - 1].symbol = currencyName;
+    exchanges[exchanges.length - 1].name = currencyName;
+
+    setToken(exchanges[exchanges.length - 1]);
+    setToken2(exchanges[0]);
+  }, [currencyName, chainID, exchanges]);
 
   const { useGetETHAmount } = useExchangeOperations(token.address);
   const { useGetTokenAmount } = useExchangeOperations(token2.address);
@@ -68,13 +77,13 @@ export const Swapper = () => {
   };
 
   const getAmount = () => {
-    if (token.symbol === options[options.length - 1].symbol) {
+    if (token.symbol === exchanges[exchanges.length - 1].symbol) {
       setSwapType(SwapType.ETH_TO_TOKEN);
       if (!!tokenAmount) {
         return formatUnits(BigInt(tokenAmount as string), 18);
       }
       return "0";
-    } else if (token2.symbol === options[options.length - 1].symbol) {
+    } else if (token2.symbol === exchanges[exchanges.length - 1].symbol) {
       setSwapType(SwapType.TOKEN_TO_ETH);
 
       return formatEther(BigInt(etherAmount ? (etherAmount as string) : "0"));
@@ -101,6 +110,12 @@ export const Swapper = () => {
     isLoadingEtherAmount,
     isLoadingTokenAmount,
     value,
+    getAmount,
+    token2,
+    amount,
+    exchanges,
+    currencyName,
+    chainID,
   ]);
 
   return (
@@ -112,7 +127,7 @@ export const Swapper = () => {
       />
       <SelectSearch
         value={token}
-        options={options}
+        options={exchanges}
         onChange={(value) => value !== token2 && setToken(value)}
       />
       <AmountInput value={value} onChange={(e) => setValue(e.target.value)} />
@@ -128,7 +143,7 @@ export const Swapper = () => {
       </motion.div>
       <SelectSearch
         value={token2}
-        options={options}
+        options={exchanges}
         onChange={(value) => value !== token && setToken2(value)}
       />
       <AmountInput
