@@ -39,7 +39,7 @@ export const Swapper = () => {
 
   const exchanges = useExchanges();
 
-  if (!exchanges) return null;
+  // if (!exchanges) return null;
 
   const { isConnected } = useAccount();
   const [value, setValue] = React.useState("0");
