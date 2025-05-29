@@ -1,6 +1,6 @@
 "use client";
-import AmountInput from "@/shared/components/ui/AmountInput";
-import SelectSearch from "@/shared/components/ui/SelectSearch";
+import { AmountInput } from "@/shared/components/ui/AmountInput";
+import { SelectSearch } from "@/shared/components/ui/SelectSearch";
 import { useExchangeOperations } from "@/shared/hooks/useExchangeOperations";
 import React, { useEffect } from "react";
 import exchanges from "@/shared/contracts/exchanges.json";

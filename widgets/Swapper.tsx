@@ -1,6 +1,7 @@
 "use client";
-import AmountInput from "@/shared/components/ui/AmountInput";
-import SelectSearch, {
+import { AmountInput } from "@/shared/components/ui/AmountInput";
+import {
+  SelectSearch,
   ISelectOption,
 } from "@/shared/components/ui/SelectSearch";
 import UpDown from "@/shared/icons/UpDown";
